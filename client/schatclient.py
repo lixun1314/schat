@@ -58,7 +58,6 @@ def recvprocess():
                 exit(0)
             else:
                 text.insert(tkinter.INSERT,"No such Option")
-
 def login():
     global userID
     userID = euser.get()

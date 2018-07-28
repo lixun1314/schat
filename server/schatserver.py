@@ -80,11 +80,13 @@ def adduser(ck, userID, userName, userpass, userGender, phoneNumber, address):
     conneMysql.connect()
     sqlDetail = str(
         'INSERT INTO user_detail(user_ID, user_gender,user_phone,user_address) '
-        'values(' + '"' + userID + '"' + ", " + '"' + userGender + '"' + ", " + '"' + phoneNumber + '"' + "," + '"' + address + '"' + ");")
+        'values(' + '"' + userID + '"' + ", " + '"' + userGender + '"' + ", " +
+        '"' + phoneNumber + '"' + "," + '"' + address + '"' + ");")
     print(sqlDetail)
     sqlLog = str(
         'INSERT INTO user_log(user_ID, user_name,user_passwd,user_log_ip) '
-        'values(' + '"' + userID + '"' + ',' + '"' + userName + '"' + "," + '"' + userpass + '"' + "," + '"' + usersocket + '"' + ");")
+        'values(' + '"' + userID + '"' + ',' + '"' + userName + '"' + "," + '"' + userpass +
+        '"' + "," + '"' + usersocket + '"' + ");")
     # print(sqlLog)
     createUserSql = "CREATE TABLE IF NOT EXISTS " + "schat" + userID + "(user_list INT PRIMARY KEY);"
     # print(createUserSql)
@@ -190,7 +192,8 @@ def modifyIP(ck, userID):
     # print("ck is %s" %(ck))
     usersocket = str(ck).split("raddr=('")[1].replace(")>", "").replace("', ", ":")
     # print(usersocket)
-    modifyIPsql = "UPDATE user_log SET user_log_ip = " + '"' + usersocket + '"' + " WHERE user_ID = " + "'" + userID + "';"
+    modifyIPsql = "UPDATE user_log SET user_log_ip = " + '"' + usersocket + '"' + \
+                  " WHERE user_ID = " + "'" + userID + "';"
     conneMysql = mysqlOperaction("localhost", "schatuser", "schat121214", "userInfo")
     # print(modifyIPsql)
     conneMysql.update(modifyIPsql)
@@ -215,7 +218,8 @@ def friendlist(ck, userID):
 
 
 def onlinelist(ck, userID):
-    sql = 'SELECT user_list FROM ' + "schat" + userID + ' join user_log on ' "schat" + userID + '.user_list = user_log.user_ID AND user_log.user_log_ip <> "0.0.0.0:00000";'
+    sql = 'SELECT user_list FROM ' + "schat" + userID + ' join user_log on ' "schat" + userID + \
+          '.user_list = user_log.user_ID AND user_log.user_log_ip <> "0.0.0.0:00000";'
     conneMysql = mysqlOperaction("localhost", "schatuser", "schat121214", "userInfo")
     sqlSelectName = "SELECT user_name FROM user_log  WHERE user_ID = "
     # print(sql)
