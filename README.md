@@ -11,4 +11,4 @@ The functions supported by the server include connecting the redis database to c
 1.server: cd server/execute ./schatserver
 2.client: cd client/ Execute ./schatclient
 ## adversive
-In order to facilitate the verification to provide server-side hosting on Tencent Cloud, you only need to use the client for verification.
+In order to facilitate the verification to provide server-side hosting on Tencent Cloud, you only need to use the client for verification. 
