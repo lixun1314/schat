@@ -6,9 +6,8 @@ def recvprocess():
     while True:
         recvdata = ck.recv(1024).decode("utf-8")
         for I in recvdata.split("@@@@")[0:-1]:
-            print("this is " + I)
+            print(I)
             recv = I.split("&$&")[1]
-            print(recv)
             if  recv == "login":
                 userID = I.split("&$&")[2]
                 result = I.split("&$&")[3]
@@ -60,7 +59,6 @@ def recvprocess():
             else:
                 text.insert(tkinter.INSERT,"No such Option")
 
-
 def login():
     global userID
     userID = euser.get()
@@ -72,7 +70,7 @@ def logup():
     gender = egender.get()
     phoneNumber = ephone.get()
     address = eaddress.get()
-    print("this is wait a few minutes later")
+    # print("this is wait a few minutes later")
     messages = common("logup", nickName, passWord, gender, phoneNumber, address)
     print(messages)
     ck.send(messages.encode("utf-8"))
