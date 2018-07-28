@@ -5,58 +5,60 @@ import time
 def recvprocess():
     while True:
         recvdata = ck.recv(1024).decode("utf-8")
-        print(recvdata)
-        recv = recvdata.split("&$&")[1]
-        if  recv == "login":
-            userID = recvdata.split("&$&")[2]
-            result = recvdata.split("&$&")[3]
-            text.insert(tkinter.INSERT,"user " + userID + " log " + result + "\n")
-        elif recv == "logup":
-            text.insert(tkinter.INSERT, "user ID: " + recvdata.split("&$&")[2] + "\n")
-        elif recv == "searchfriend":
-            friend_name = recvdata.split("&$&")[3]
-            if friend_name == "No such user":
-                text.insert(tkinter.INSERT, "No such user" + "\n")
+        for I in recvdata.split("@@@@")[0:-1]:
+            print("this is " + I)
+            recv = I.split("&$&")[1]
+            print(recv)
+            if  recv == "login":
+                userID = I.split("&$&")[2]
+                result = I.split("&$&")[3]
+                text.insert(tkinter.INSERT,"user " + userID + " log " + result + "\n")
+            elif recv == "logup":
+                text.insert(tkinter.INSERT, "user ID: " + I.split("&$&")[2] + "\n")
+            elif recv == "searchfriend":
+                friend_name = I.split("&$&")[3]
+                if friend_name == "No such user":
+                    text.insert(tkinter.INSERT, "No such user" + "\n")
+                else:
+                    text.insert(tkinter.INSERT, "username: " + friend_name + "\n")
+            elif recv == "connectfriend":
+                friendsaid(I)
+            elif recv == "addfriend":
+                text.insert(tkinter.INSERT, I.split("&$&")[4] + "\n")
+            elif recv == "delfriend":
+                text.insert(tkinter.INSERT, I.split("&$&")[4] + "\n")
+            elif recv == "friendlist":
+                count = 1
+                text.insert(tkinter.INSERT, "->user_list BEGAIN<-\n")
+                print(recvdata)
+                for J in I.split("&$&")[3:-3]:
+                    print(J)
+                    if count % 2 == 0:
+                        text.insert(tkinter.INSERT, "name: " + J + "\n")
+                    else:
+                        text.insert(tkinter.INSERT, "ID: " + J + "\n")
+                        print("user_ID %s" % (J))
+                    count += 1
+                text.insert(tkinter.INSERT, "->user_list END<-" + "\n")
+            elif recv == "onlinefriend":
+                count = 1
+                text.insert(tkinter.INSERT, "->online start<-\n")
+                print(I)
+                for J in I.split("&$&")[3:-3]:
+                    print(I)
+                    if count % 2 == 0:
+                        text.insert(tkinter.INSERT, "name: " + J + "\n")
+                    else:
+                        text.insert(tkinter.INSERT, "ID: " + J + "\n")
+                        print("user_ID %s" % (I))
+                    count += 1
+                text.insert(tkinter.INSERT, "->online end<-" + "\n")
+            elif recv == "logout":
+                text.insert(tkinter.INSERT, I.split("&$&")[3])
+                ck.close()
+                exit(0)
             else:
-                text.insert(tkinter.INSERT, "username: " + friend_name + "\n")
-        elif recv == "connectfriend":
-            friendsaid(recvdata)
-        elif recv == "addfriend":
-            text.insert(tkinter.INSERT,recvdata.split("&$&")[4] + "\n")
-        elif recv == "delfriend":
-            text.insert(tkinter.INSERT, recvdata.split("&$&")[4] + "\n")
-        elif recv == "friendlist":
-            count = 1
-            text.insert(tkinter.INSERT, "->user_list BEGAIN<-\n")
-            print(recvdata)
-            for I in recvdata.split("&$&")[3:-3]:
-                print(I)
-                if count % 2 == 0:
-                    text.insert(tkinter.INSERT, "name: " + I + "\n")
-                else:
-                    text.insert(tkinter.INSERT, "ID: " + I + "\n")
-                    print("user_ID %s" % (I))
-                count += 1
-            text.insert(tkinter.INSERT, "->user_list END<-" + "\n")
-        elif recv == "onlinefriend":
-            count = 1
-            text.insert(tkinter.INSERT, "->online start<-\n")
-            print(recvdata)
-            for I in recvdata.split("&$&")[3:-3]:
-                print(I)
-                if count % 2 == 0:
-                    text.insert(tkinter.INSERT, "name: " + I + "\n")
-                else:
-                    text.insert(tkinter.INSERT, "ID: " + I + "\n")
-                    print("user_ID %s" % (I))
-                count += 1
-            text.insert(tkinter.INSERT, "->online end<-" + "\n")
-        elif recv == "logout":
-            text.insert(tkinter.INSERT, recvdata.split("&$&")[3])
-            ck.close()
-            exit(0)
-        else:
-            text.insert(tkinter.INSERT,"No such Option")
+                text.insert(tkinter.INSERT,"No such Option")
 
 
 def login():
@@ -81,8 +83,8 @@ def friendsaid(recvdata):
     text.insert(tkinter.INSERT, friend + ": " + mess + "\n")
 def connectserver():
     global ck
-    ipStr = "127.0.0.1"
-    portStr = "8080"
+    ipStr = "119.29.63.48"
+    portStr = 12131
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((ipStr, int(portStr)))
     ck = client

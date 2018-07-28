@@ -239,7 +239,7 @@ def run(ck):
 
 def start():
     ipStr = "127.0.0.1"
-    ipPort = 8080
+    ipPort = 12131
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((ipStr, int(ipPort)))
     server.listen(5)
